@@ -122,9 +122,6 @@ void * create_afu_buffer(afu_t *afu, uint64_t size) {
   // Cache align iova
   iova >>= 6;
 
-  // Notify fpga of buffer
-  write_afu_csr(afu, BUFFER_ADDR, iova);
-
   // Store buffer info
   afu->shared_buffer.iova = iova;
 
