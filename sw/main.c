@@ -1,4 +1,5 @@
 #include <inttypes.h>
+#include <unistd.h>
 
 #include "afu_json_info.h"
 #include "afu.h"
@@ -8,9 +9,8 @@ int main() {
   afu_t afu;
   setup_afu(&afu, AFU_ACCEL_UUID);
 
-  uint64_t afu_id_l = read_afu_csr(&afu, AFU_ID_L);
-  uint64_t afu_id_h = read_afu_csr(&afu, AFU_ID_H);
+  volatile uint8_t *buffer = (uint8_t*)create_afu_buffer(&afu, getpagesize());
+  uint64_t buffer_addr = read_afu_csr(&afu, BUFFER_ADDR);
 
-  printf("%" PRIu64 "\n", afu_id_l);
-  printf("%" PRIu64 "\n", afu_id_h);
+  printf("%" PRIu64 "\n", buffer_addr);
 }
