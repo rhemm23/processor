@@ -13,6 +13,7 @@ module csrs
     /*
      * Outputs
      */
+    output reg [63:0] buffer_addr,
     output t_if_ccip_c2_Tx tx
   );
 
@@ -22,6 +23,7 @@ module csrs
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
+      buffer_addr <= '0;
       tx <= '0;
     end else begin
       if (rx.mmioRdValid) begin
@@ -42,10 +44,16 @@ module csrs
           16'h0004: tx.data <= afu_id[127:64];
           16'h0006: tx.data <= 0;
           16'h0008: tx.data <= 0;
+          16'h000A: tx.data <= buffer_addr;
           default: tx.data <= 0;
         endcase
       end else begin
         tx.mmioRdValid <= 0;
+      end
+      if (rx.mmioWrValid) begin
+        case (mmio_hdr.address)
+          16'h000A: buffer_addr <= rx.data;
+        endcase
       end
     end
   end

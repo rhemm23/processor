@@ -12,7 +12,8 @@
 typedef enum afu_csr {
   DHF = 0,
   AFU_ID_L = 1,
-  AFU_ID_H = 2
+  AFU_ID_H = 2,
+  BUFFER_ADDR = 5
 } afu_csr_t;
 
 typedef struct afu_buffer {

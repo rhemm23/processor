@@ -15,10 +15,13 @@ module afu
     output t_if_ccip_Tx tx
   );
 
+  wire [63:0] buffer_addr;
+
   csrs ctrl_regs (
     .clk(clk),
     .rst_n(rst_n),
     .rx(rx.c0),
+    .buffer_addr(buffer_addr),
     .tx(tx.c2)
   );
 
